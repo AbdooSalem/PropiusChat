@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "929227014759",
+    "firebase_url": "https://propius-b660b.firebaseio.com",
+    "project_id": "propius-b660b",
+    "storage_bucket": "propius-b660b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929227014759:android:d33062554abe254c",
+        "android_client_info": {
+          "package_name": "com.abdoo.android.propius"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929227014759-d19gaaaolet4uecr6o2oc7p94idud0mp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abdoo.android.propius",
+            "certificate_hash": "398011c22d1ed49b8e9aac03c1ef6286d51b8dec"
+          }
+        },
+        {
+          "client_id": "929227014759-egsugtbgo3ck2bcshbv1n9g1o3aavleq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtfYWAzO04mrxw5YP-fjWs1YXdRuWfe9M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929227014759-egsugtbgo3ck2bcshbv1n9g1o3aavleq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
