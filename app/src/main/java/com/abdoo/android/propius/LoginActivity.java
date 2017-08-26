@@ -34,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.login_activity_toolbar);
         mLoginEmail = (TextInputLayout) findViewById(R.id.login_email);
         mLoginPass= (TextInputLayout) findViewById(R.id.login_pass);
+        mLoginEmail.getEditText().setText("said@gmail.com");
+        mLoginPass.getEditText().setText("password");
 
         mLoginBtn = (Button) findViewById(R.id.login_login_btn);
 
