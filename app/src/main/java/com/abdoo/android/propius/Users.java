@@ -7,6 +7,7 @@ public class Users {
     public String username;
     public String image;
     public String status;
+    public String thumb_img;
 
     public Users() {
 
@@ -43,5 +44,9 @@ public class Users {
     public String getName() {
         Log.d("ffff", username);
         return username;
+    }
+
+    public String getThumbImage() {
+        return thumb_img;
     }
 }

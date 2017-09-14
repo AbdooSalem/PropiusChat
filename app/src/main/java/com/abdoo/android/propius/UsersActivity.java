@@ -1,5 +1,7 @@
 package com.abdoo.android.propius;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,14 +11,21 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UsersActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private RecyclerView mUsersList;
     private DatabaseReference mUsersDb;
+
+    private DatabaseReference mCrrUserDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,8 @@ public class UsersActivity extends AppCompatActivity {
 
         mUsersDb = FirebaseDatabase.getInstance().getReference().child("users");
 
+        mCrrUserDb = mUsersDb.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
 
         mUsersList = (RecyclerView) findViewById(R.id.users_list);
         mUsersList.setHasFixedSize(true);
@@ -41,6 +52,8 @@ public class UsersActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        mCrrUserDb.child("online").setValue(true);
+
         FirebaseRecyclerAdapter<Users, UsersViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
                         Users.class,
@@ -51,6 +64,20 @@ public class UsersActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(UsersViewHolder usersViewHolder, Users users, int position) {
                 usersViewHolder.setInfo(users.getName(), users.getStatus());
+                usersViewHolder.setUserImage(users.getThumbImage(), getApplicationContext());
+
+                final String userId = getRef(position).getKey();
+
+                usersViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent profileIntent = new Intent(UsersActivity.this, ProfileActivity.class);
+                        profileIntent.putExtra("userId", userId);
+                        startActivity(profileIntent);
+                    }
+                });
+
+
             }
         };
 
@@ -73,5 +100,17 @@ public class UsersActivity extends AppCompatActivity {
             usernameView.setText(username);
             statusView.setText(status);
         }
+
+        public void setUserImage(String thumb_image, Context context){
+            CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.user_single_image);
+            Picasso.with(context).load(thumb_image).placeholder(R.drawable.user2).into(userImageView);
+
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mCrrUserDb.child("online").setValue(ServerValue.TIMESTAMP);
     }
 }
