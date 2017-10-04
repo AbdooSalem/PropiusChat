@@ -3,6 +3,8 @@ package com.abdoo.android.propius;
 import android.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.LayoutInflater;
+import android.widget.TextView;
 
 public class CustomPagerAdapter extends FragmentPagerAdapter {
 
@@ -14,14 +16,11 @@ public class CustomPagerAdapter extends FragmentPagerAdapter {
     public android.support.v4.app.Fragment getItem(int position) {
         switch (position){
             case 0:
-                RequestsFragment requestsFragment = new RequestsFragment();
-                return requestsFragment;
+                return new ChatsFragment();
             case 1:
-                ChatsFragment chatsFragment = new ChatsFragment();
-                return chatsFragment;
+                return new RequestsFragment();
             case 2:
-                FriendsFragment friendsFragment = new FriendsFragment();
-                return friendsFragment;
+                return new FriendsFragment();
             default:
                 return null;
         }
@@ -36,11 +35,11 @@ public class CustomPagerAdapter extends FragmentPagerAdapter {
 
         switch (position){
             case 0:
-                return "REQUESTS";
+                return "";
             case 1:
-                return "CHATS";
+                return "";
             case 2:
-                return "FRIENDS";
+                return "";
             default:
                 return null;
         }

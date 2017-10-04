@@ -92,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                     HashMap<String, String> userMap = new HashMap<>();
                     userMap.put("image", "default");
                     userMap.put("username", username);
-                    userMap.put("status", "Hi there, I'm using Propius Chat App...;)");
+                    userMap.put("online", "Hi there, I'm using Propius Chat App...;)");
                     userMap.put("thumb_img", "default");
 
                     mDb.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {

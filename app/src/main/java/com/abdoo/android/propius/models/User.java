@@ -1,19 +1,19 @@
-package com.abdoo.android.propius;
+package com.abdoo.android.propius.models;
 
 
 import android.util.Log;
 
-public class Users {
-    public String username;
-    public String image;
-    public String status;
-    public String thumb_img;
+public class User {
+    private String username;
+    private String image;
+    private String status;
+    private String thumb_img;
 
-    public Users() {
+    public User() {
 
     }
 
-    public Users(String username, String image, String status) {
+    public User(String username, String image, String status) {
 
         this.username = username;
         this.image = image;

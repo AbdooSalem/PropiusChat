@@ -4,32 +4,43 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.abdoo.android.propius.models.Message;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-public class MessageRecyclerVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    FirebaseAuth mAuth;
-    RecyclerView.ViewHolder viewHolder;
-    final int COMING = 0;
-    final int GOING = 1;
+    private FirebaseAuth mAuth;
+    private RecyclerView.ViewHolder viewHolder;
+    private final int COMING = 0;
+    private final int GOING = 1;
+    private final int LOADING = 2;
+
+
 
     // The items to display in your RecyclerView
     private List<Message> messagesList;
 
-    public MessageRecyclerVAdapter(List<Message> messagesList) {
+    public MessageAdapter(List<Message> messagesList) {
         this.messagesList = messagesList;
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+
     @Override
     public int getItemCount() {
-        return this.messagesList.size();
+        return this.messagesList.isEmpty() ? 0 : this.messagesList.size();
     }
 
     @Override
     public int getItemViewType(int i) {
+        if(messagesList.get(i) == null)
+            return LOADING;
         String fromUserId = messagesList.get(i).getFrom();
         String crrUserId = mAuth.getInstance().getCurrentUser().getUid();
         if(fromUserId.equals(crrUserId))
@@ -58,32 +69,65 @@ public class MessageRecyclerVAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+        long timestamp;
         switch (viewHolder.getItemViewType()){
             case COMING:
                 ComingVHolder vh1 = (ComingVHolder) viewHolder;
                 vh1.comingMsg.setText(messagesList.get(i).getMessage());
+                ////
+                timestamp = messagesList.get(i).getTime();
+                setTimetoView(timestamp, vh1.messageTime);
                 break;
 
             case GOING:
                 GoingVHolder vh2 = (GoingVHolder) viewHolder;
                 vh2.goingMsg.setText(messagesList.get(i).getMessage());
+                timestamp = messagesList.get(i).getTime();
+                setTimetoView(timestamp, vh2.messageTime);
+                break;
+
+            case LOADING:
+                LoadingViewHolder loadingViewHolder = (LoadingViewHolder) viewHolder;
+                loadingViewHolder.progressBar.setIndeterminate(true);
                 break;
         }
     }
 
     private class ComingVHolder extends RecyclerView.ViewHolder {
         private TextView comingMsg;
+        private TextView messageTime;
         public ComingVHolder(View v1) {
             super(v1);
             comingMsg = (TextView) v1.findViewById(R.id.message_single_text_c);
+            messageTime = (TextView) v1.findViewById(R.id.message_single_layout_c_time);
+
         }
     }
 
     private class GoingVHolder extends RecyclerView.ViewHolder {
         private TextView goingMsg;
+        private TextView messageTime;
         public GoingVHolder(View v2) {
             super(v2);
             goingMsg = (TextView) v2.findViewById(R.id.message_single_text_g);
+            messageTime = (TextView) v2.findViewById(R.id.message_single_layout_g_time);
+
         }
     }
+
+    private class LoadingViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar progressBar;
+        public LoadingViewHolder(View itemView) {
+            super(itemView);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progressbar_1);
+        }
+    }
+
+    private void setTimetoView(long timestamp, TextView view){
+        Date date = new Date(timestamp);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String timeString = sdf.format(date);
+        view.setText(timeString);
+    }
+
 }

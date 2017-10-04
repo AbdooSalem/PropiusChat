@@ -1,15 +1,30 @@
 package com.abdoo.android.propius;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -35,22 +51,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import id.zelory.compressor.Compressor;
-
-import static android.R.attr.bitmap;
 
 public class SettingsActivity extends AppCompatActivity {
     private DatabaseReference mUserDb;
     private FirebaseUser mCrrUser;
+    private ScrollView mScrollView;
+    private RelativeLayout mLoadingPanel;
 
-    private CircleImageView mImage;
+    private ImageView mImage;
     private TextView mUsername;
     private TextView mStatus;
-    private Button mChangeStatusBtn;
-    private Button mChangeImageBtn;
+    private ImageButton mStatusEditBtn;
+//    private Button mChangeStatusBtn;
+    private FloatingActionButton mChangeImageBtn;
     private ProgressDialog mProgress;
 
     private static final int GALLERY_PICK = 2;
@@ -64,18 +79,21 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        mImage = (CircleImageView) findViewById(R.id.settings_image);
+        mImage = (ImageView) findViewById(R.id.settings_image);
         mUsername = (TextView) findViewById(R.id.settings_username);
+        mStatusEditBtn = (ImageButton) findViewById(R.id.settings_edit);
         mStatus = (TextView) findViewById(R.id.settings_status);
+        mLoadingPanel = (RelativeLayout) findViewById(R.id.settings_loadingPanel);
 
-        mChangeStatusBtn = (Button) findViewById(R.id.settings_changeStatus);
-        mChangeImageBtn = (Button) findViewById(R.id.settings_changeImg);
+//        mChangeStatusBtn = (Button) findViewById(R.id.settings_changeStatus);
+        mChangeImageBtn = (FloatingActionButton) findViewById(R.id.settings_changeImg);
+        mScrollView = (ScrollView) findViewById(R.id.settings_scrollview);
 
         // Firebase
         mCrrUser = FirebaseAuth.getInstance().getCurrentUser();
         mImagesStorage = FirebaseStorage.getInstance().getReference();
 
-        String crrUid = mCrrUser.getUid();
+        final String crrUid = mCrrUser.getUid();
         mUserDb = FirebaseDatabase.getInstance().getReference().child("users").child(crrUid);
 
         mUserDb.addValueEventListener(new ValueEventListener() {
@@ -91,24 +109,31 @@ public class SettingsActivity extends AppCompatActivity {
                 mUsername.setText(username);
                 mStatus.setText(status);
 
+                // Setting the loading panel
                 if( !image.equals("default") )
-                    Picasso.with(SettingsActivity.this).load(image).into(mImage);
+                    Picasso.with(SettingsActivity.this).load(image).into(mImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            mLoadingPanel.setVisibility(View.GONE);
+                            mScrollView.setVisibility(View.VISIBLE);
+                            mScrollView.scrollTo(0, mImage.getHeight()/2);
+                        }
 
+                        @Override
+                        public void onError() {
+                            mLoadingPanel.setVisibility(View.GONE);
+                            mScrollView.setVisibility(View.VISIBLE);
+                        }
+                    });
+                else{
+                    mLoadingPanel.setVisibility(View.GONE);
+                    mScrollView.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
-        mChangeStatusBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String statusVal = mStatus.getText().toString();
-                Intent statusIntent = new Intent(SettingsActivity.this, StatusActivity.class);
-                statusIntent.putExtra("statusVal",statusVal);
-                startActivity(statusIntent);
             }
         });
 
@@ -124,6 +149,22 @@ public class SettingsActivity extends AppCompatActivity {
                         .setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1)
                         .setMinCropResultSize(500, 500)
                         .start(SettingsActivity.this);
+
+            }
+        });
+
+
+        // Update the current online by opening a Dialog fragment
+        mStatusEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String statusString = mStatus.getText().toString();
+                Bundle bundle = new Bundle();
+                bundle.putString("crrStatus", statusString);
+                bundle.putString("uid", crrUid);
+                DialogFragment statusDialog = new UpdateStatusDialogFragment();
+                statusDialog.setArguments(bundle);
+                statusDialog.show(getFragmentManager(), "online");
 
             }
         });

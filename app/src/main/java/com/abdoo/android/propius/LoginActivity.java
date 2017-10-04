@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 String pass = mLoginPass.getEditText().getText().toString();
 
                 if( !TextUtils.isEmpty(email) || !TextUtils.isEmpty(pass)){
-                    mLoginProgress.setTitle("Loggin In");
+                    mLoginProgress.setTitle("Login");
                     mLoginProgress.setMessage("Please wait..");
                     mLoginProgress.setCanceledOnTouchOutside(false);
                     mLoginProgress.show();

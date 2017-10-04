@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout = (TabLayout) findViewById(R.id.main_tabPager);
         mTabLayout.setupWithViewPager(mViewPager);
 
+        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_chat_bubble_black_24dp);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_group_add_black_24dp);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_people_black_24dp);
+
     }
 
     @Override

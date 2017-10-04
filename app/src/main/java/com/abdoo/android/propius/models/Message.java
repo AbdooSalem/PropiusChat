@@ -1,8 +1,5 @@
-package com.abdoo.android.propius;
+package com.abdoo.android.propius.models;
 
-/**
- * Created by root on 9/11/17.
- */
 
 public class Message {
     private String message, type, from;

@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.abdoo.android.propius.models.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -54,15 +55,15 @@ public class UsersActivity extends AppCompatActivity {
 
         mCrrUserDb.child("online").setValue(true);
 
-        FirebaseRecyclerAdapter<Users, UsersViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
-                        Users.class,
+        FirebaseRecyclerAdapter<User, UsersViewHolder> firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<User, UsersViewHolder>(
+                        User.class,
                         R.layout.users_single_layout,
                         UsersViewHolder.class,
                         mUsersDb
                 ) {
             @Override
-            protected void populateViewHolder(UsersViewHolder usersViewHolder, Users users, int position) {
+            protected void populateViewHolder(UsersViewHolder usersViewHolder, User users, int position) {
                 usersViewHolder.setInfo(users.getName(), users.getStatus());
                 usersViewHolder.setUserImage(users.getThumbImage(), getApplicationContext());
 
