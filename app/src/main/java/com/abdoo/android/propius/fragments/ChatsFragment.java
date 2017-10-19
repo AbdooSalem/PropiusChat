@@ -1,4 +1,4 @@
-package com.abdoo.android.propius;
+package com.abdoo.android.propius.fragments;
 
 
 import android.content.Context;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.abdoo.android.propius.R;
+import com.abdoo.android.propius.activities.ChatActivity;
 import com.abdoo.android.propius.models.Chat;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;

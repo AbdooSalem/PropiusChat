@@ -1,4 +1,4 @@
-package com.abdoo.android.propius;
+package com.abdoo.android.propius.helpers;
 
 import android.app.Application;
 

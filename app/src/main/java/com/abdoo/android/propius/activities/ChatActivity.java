@@ -1,4 +1,4 @@
-package com.abdoo.android.propius;
+package com.abdoo.android.propius.activities;
 
 import android.content.Context;
 import android.support.v7.app.ActionBar;
@@ -16,6 +16,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.abdoo.android.propius.adapters.MessageAdapter;
+import com.abdoo.android.propius.R;
+import com.abdoo.android.propius.helpers.TimeAgo;
 import com.abdoo.android.propius.models.Message;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;

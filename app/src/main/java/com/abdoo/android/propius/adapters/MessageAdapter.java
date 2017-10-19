@@ -1,4 +1,4 @@
-package com.abdoo.android.propius;
+package com.abdoo.android.propius.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.abdoo.android.propius.R;
 import com.abdoo.android.propius.models.Message;
 import com.google.firebase.auth.FirebaseAuth;
 

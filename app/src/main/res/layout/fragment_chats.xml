@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context="com.abdoo.android.propius.ChatsFragment">
+    tools:context="com.abdoo.android.propius.fragments.ChatsFragment">
 
 
     <android.support.v7.widget.RecyclerView

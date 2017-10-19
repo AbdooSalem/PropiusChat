@@ -1,4 +1,4 @@
-package com.abdoo.android.propius;
+package com.abdoo.android.propius.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.abdoo.android.propius.R;
 import com.abdoo.android.propius.models.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,8 +65,8 @@ public class UsersActivity extends AppCompatActivity {
                 ) {
             @Override
             protected void populateViewHolder(UsersViewHolder usersViewHolder, User users, int position) {
-                usersViewHolder.setInfo(users.getName(), users.getStatus());
-                usersViewHolder.setUserImage(users.getThumbImage(), getApplicationContext());
+                usersViewHolder.setInfo(users.getUsername(), users.getStatus());
+                usersViewHolder.setUserImage(users.getThumb_img(), getApplicationContext());
 
                 final String userId = getRef(position).getKey();
 
@@ -77,9 +78,9 @@ public class UsersActivity extends AppCompatActivity {
                         startActivity(profileIntent);
                     }
                 });
-
-
             }
+
+
         };
 
         mUsersList.setAdapter(firebaseRecyclerAdapter);
@@ -97,9 +98,7 @@ public class UsersActivity extends AppCompatActivity {
 
         public void setInfo(String username, String status) {
             TextView usernameView = (TextView) mView.findViewById(R.id.user_single_username);
-            TextView statusView = (TextView) mView.findViewById(R.id.user_single_status);
             usernameView.setText(username);
-            statusView.setText(status);
         }
 
         public void setUserImage(String thumb_image, Context context){

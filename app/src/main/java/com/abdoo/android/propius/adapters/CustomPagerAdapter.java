@@ -1,10 +1,11 @@
-package com.abdoo.android.propius;
+package com.abdoo.android.propius.adapters;
 
-import android.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.LayoutInflater;
-import android.widget.TextView;
+
+import com.abdoo.android.propius.fragments.ChatsFragment;
+import com.abdoo.android.propius.fragments.FriendsFragment;
+import com.abdoo.android.propius.fragments.RequestsFragment;
 
 public class CustomPagerAdapter extends FragmentPagerAdapter {
 
